@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2ecd1807a316f252dab0207db3a8a6506e1f1081d971f343413643c7262086eb
+-- hash: 005352a6c7fba06af98b365141e69cabe6e2a0005c67f85acf4bca00f6183ea0
 
 name:           stripey
 version:        0.0.0.1
@@ -60,6 +60,8 @@ library
       Stripey.Sessions.Data.ShippingAddressCollection
       Stripey.Sessions.Data.SubmitType
       Stripey.Sessions.Data.SubscriptionData
+      Stripey.Sessions.List
+      Stripey.Sessions.Retrieve
   other-modules:
       Paths_stripey
   hs-source-dirs:
