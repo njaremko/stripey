@@ -56,17 +56,17 @@ import Protolude
 -- > main = do
 -- > let env = mkEnv "sk_test_...."
 -- > runStripe env $ do
--- > createdSession <- SC.createSession [Card] "https://example.com/success" "https://example.com/cancel"
--- >    $ SC.withMode Payment
--- >    <> SC.withLineItems [LineItem 100 CAD "Example 1" 1 Nothing Nothing]
--- > print createdSession
--- > singletonListForCustomer <- CL.listCharges $ CL.withLimit 1 <> CL.withCustomer "cus_GCL2qiq19I4Cqu"
--- > print singletonListForCustomer
--- > listOfCharges <- CL.listCharges defaultOptions
--- > print listOfCharges
--- > retrievedCharge <- CR.retrieveCharge "ch_1GTG7gKz9NjFstHCziw56Hxf" defaultOptions
--- > print retrievedCharge
--- > createdCharge <- makeCharge "cus_GCL2qiq19I4Cqu"
--- > print createdCharge
+-- >   createdSession <- SC.createSession [Card] "https://example.com/success" "https://example.com/cancel"
+-- >      $ SC.withMode Payment
+-- >      <>   SC.withLineItems [LineItem 100 CAD "Example 1" 1 Nothing Nothing]
+-- >   print createdSession
+-- >   singletonListForCustomer <- CL.listCharges $ CL.withLimit 1 <>   CL.withCustomer "cus_GCL2qiq19I4Cqu"
+-- >   print singletonListForCustomer
+-- >   listOfCharges <- CL.listCharges defaultOptions
+-- >   print listOfCharges
+-- >   retrievedCharge <- CR.retrieveCharge "ch_1GTG7gKz9NjFstHCziw56Hxf" defaultOptions
+-- >   print retrievedCharge
+-- >   createdCharge <- makeCharge "cus_GCL2qiq19I4Cqu"
+-- >   print createdCharge
 ignoreThis :: Text -> Text
 ignoreThis a = a
