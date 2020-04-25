@@ -1,0 +1,130 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 2ecd1807a316f252dab0207db3a8a6506e1f1081d971f343413643c7262086eb
+
+name:           stripey
+version:        0.0.0.1
+description:    Please see the README on GitHub at <https://github.com/njaremko/stripey>
+homepage:       https://github.com/njaremko/stripey#readme
+bug-reports:    https://github.com/njaremko/stripey/issues
+author:         Nathan Jaremko
+maintainer:     nathan@jaremko.ca
+copyright:      2020 Nathan Jaremko
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/njaremko/stripey
+
+library
+  exposed-modules:
+      Stripey
+      Stripey.Charges
+      Stripey.Charges.Capture
+      Stripey.Charges.Create
+      Stripey.Charges.Data.Address
+      Stripey.Charges.Data.BillingAddress
+      Stripey.Charges.Data.BillingDetails
+      Stripey.Charges.Data.CardBrand
+      Stripey.Charges.Data.CardNetwork
+      Stripey.Charges.Data.Charge
+      Stripey.Charges.Data.ChargeFunding
+      Stripey.Charges.Data.Currency
+      Stripey.Charges.Data.FraudDetails
+      Stripey.Charges.Data.Outcome
+      Stripey.Charges.Data.PaymentMethodDetails
+      Stripey.Charges.Data.PaymentMethodDetails.ACHCreditTransfer
+      Stripey.Charges.Data.PaymentMethodDetails.Card
+      Stripey.Charges.Data.Shipping
+      Stripey.Charges.List
+      Stripey.Charges.Retrieve
+      Stripey.Charges.Update
+      Stripey.Env
+      Stripey.Sessions.Create
+      Stripey.Sessions.Data.BillingAddressCollection
+      Stripey.Sessions.Data.LineItem
+      Stripey.Sessions.Data.Locale
+      Stripey.Sessions.Data.Mode
+      Stripey.Sessions.Data.PaymentMethodType
+      Stripey.Sessions.Data.Session
+      Stripey.Sessions.Data.Shipping
+      Stripey.Sessions.Data.ShippingAddressCollection
+      Stripey.Sessions.Data.SubmitType
+      Stripey.Sessions.Data.SubscriptionData
+  other-modules:
+      Paths_stripey
+  hs-source-dirs:
+      src
+  default-extensions: NoImplicitPrelude
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-uni-patterns -Wincomplete-record-updates
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , capability
+    , casing
+    , generic-optics
+    , genvalidity
+    , genvalidity-aeson
+    , http-api-data
+    , mtl
+    , optics-core
+    , protolude
+    , req
+    , stm
+    , text
+    , validity
+    , validity-aeson
+  if impl(ghc >= 8.0)
+    ghc-options: -Wredundant-constraints
+  if impl(ghc >= 8.2)
+    ghc-options: -fhide-source-paths
+  if impl(ghc >= 8.4)
+    ghc-options: -Wmissing-export-lists -Wpartial-fields
+  default-language: Haskell2010
+
+test-suite stripey-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_stripey
+  hs-source-dirs:
+      test
+  default-extensions: NoImplicitPrelude
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-uni-patterns -Wincomplete-record-updates -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , capability
+    , casing
+    , generic-optics
+    , genvalidity
+    , genvalidity-aeson
+    , genvalidity-hspec
+    , genvalidity-hspec-aeson
+    , hspec
+    , http-api-data
+    , mtl
+    , optics-core
+    , protolude
+    , req
+    , stm
+    , stripey
+    , text
+    , validity
+    , validity-aeson
+  if impl(ghc >= 8.0)
+    ghc-options: -Wredundant-constraints
+  if impl(ghc >= 8.2)
+    ghc-options: -fhide-source-paths
+  if impl(ghc >= 8.4)
+    ghc-options: -Wmissing-export-lists -Wpartial-fields
+  default-language: Haskell2010

@@ -1,0 +1,76 @@
+name:                stripey
+version:             0.0.0.1
+github:              "njaremko/stripey"
+license:             BSD-3-Clause
+author:              "Nathan Jaremko"
+maintainer:          "nathan@jaremko.ca"
+copyright:           "2020 Nathan Jaremko"
+
+extra-source-files:
+- README.md
+- CHANGELOG.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/njaremko/stripey>
+
+dependencies:
+- name: base
+  version: ">= 4.7 && < 5"
+- protolude
+- aeson
+- casing
+- req
+- text
+- optics-core
+- generic-optics
+- stm
+- capability
+- mtl
+- validity
+- validity-aeson
+- genvalidity
+- genvalidity-aeson
+- http-api-data
+
+default-extensions:
+  NoImplicitPrelude
+
+ghc-options:
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wincomplete-uni-patterns
+    -Wincomplete-record-updates
+
+when:
+- condition: impl(ghc >= 8.0)
+  ghc-options: -Wredundant-constraints
+- condition: impl(ghc >= 8.2)
+  ghc-options: -fhide-source-paths
+- condition: impl(ghc >= 8.4)
+  ghc-options: -Wmissing-export-lists -Wpartial-fields
+# - condition: impl(ghc >= 8.8)
+#   ghc-options: -Wmissing-deriving-strategies
+
+library:
+  source-dirs:           src
+
+tests:
+   stripey-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - stripey
+    - hspec
+    - genvalidity-hspec
+    - genvalidity-hspec-aeson
