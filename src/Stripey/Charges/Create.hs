@@ -8,7 +8,6 @@
 
 module Stripey.Charges.Create
   ( createCharge,
-    createCharge',
     withDescription,
     withReceiptEmail,
     withStatementDescriptor,

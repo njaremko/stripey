@@ -17,7 +17,6 @@ module Stripey.Charges.List
   ( Charge,
     ListChargesResponse,
     listCharges,
-    listCharges',
     defaultOptions,
     withCustomer,
     withLimit,
