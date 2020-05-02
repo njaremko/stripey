@@ -2,8 +2,8 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Stripey.Charges.Data.FraudDetails
   ( FraudDetails,
@@ -11,17 +11,16 @@ module Stripey.Charges.Data.FraudDetails
 where
 
 import Data.Aeson
-import Protolude
-import Web.HttpApiData (ToHttpApiData(..))
-import qualified Data.Text.Lazy.Encoding as TLE
-import qualified Data.Text.Lazy as TL
 import qualified Data.Text as T
+import qualified Data.Text.Lazy as TL
+import qualified Data.Text.Lazy.Encoding as TLE
+import Protolude
+import Web.HttpApiData (ToHttpApiData (..))
 
-data FraudDetails
-  = FraudDetails
-      { stripe_report :: Maybe Text,
-        user_report :: Maybe Text
-      }
+data FraudDetails = FraudDetails
+  { stripe_report :: Maybe Text,
+    user_report :: Maybe Text
+  }
   deriving (Show, Generic)
 
 instance FromJSON FraudDetails where
@@ -31,4 +30,4 @@ instance ToJSON FraudDetails where
   toJSON = genericToJSON defaultOptions
 
 instance ToHttpApiData FraudDetails where
-  toUrlPiece shipping = T.dropAround (=='"') . TL.toStrict $ TLE.decodeUtf8 (encode shipping)
+  toUrlPiece shipping = T.dropAround (== '"') . TL.toStrict $ TLE.decodeUtf8 (encode shipping)

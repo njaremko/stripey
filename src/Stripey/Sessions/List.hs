@@ -1,40 +1,39 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeInType #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeInType #-}
 
 module Stripey.Sessions.List
-(
-    listSessions,
+  ( listSessions,
     withLimit,
     withStartingAfter,
-    withEndingBefore
-) where
+    withEndingBefore,
+  )
+where
 
 import Capability.Reader
+import Data.Aeson
 import Network.HTTP.Req
 import qualified Network.HTTP.Req as Req
-import Stripey.Sessions.Data.Session (Session)
-import Stripey.Env hiding (defaultOptions)
-import Data.Aeson
 import Protolude hiding (MonadReader, ask)
+import Stripey.Env hiding (defaultOptions)
+import Stripey.Sessions.Data.Session (Session)
 
-data ListSessionsResponse = ListSessionsResponse {
-  response_object :: Text,
-  response_url :: Text,
-  response_has_more :: Bool,
-  response_data :: [Session]
-} deriving (Show, Generic)
+data ListSessionsResponse = ListSessionsResponse
+  { response_object :: Text,
+    response_url :: Text,
+    response_has_more :: Bool,
+    response_data :: [Session]
+  }
+  deriving (Show, Generic)
 
 instance FromJSON ListSessionsResponse where
   parseJSON = genericParseJSON defaultOptions {fieldLabelModifier = drop 9}

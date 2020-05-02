@@ -2,20 +2,20 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Stripey.Sessions.Data.PaymentMethodType
-  ( PaymentMethodType(..),
-  toStripeParams
+  ( PaymentMethodType (..),
+    toStripeParams,
   )
 where
 
 import Data.Aeson
 import Data.Char (toLower)
-import Protolude
-import Network.HTTP.Req (FormUrlEncodedParam, (=:))
 import qualified Data.Text as T
+import Network.HTTP.Req ((=:), FormUrlEncodedParam)
+import Protolude
 
 data PaymentMethodType = Card | Ideal | FPX deriving (Show, Generic)
 

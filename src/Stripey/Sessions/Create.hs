@@ -1,22 +1,22 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
-{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Stripey.Sessions.Create
   ( createSession,
-  defaultOptions,
-  withMode,
-  withLineItems,
-  withClientReferenceId,
-  withCustomer,
-  withCustomerEmail,
-  withLocale,
-  withSubmitType,
-  withSubscriptionData
+    defaultOptions,
+    withMode,
+    withLineItems,
+    withClientReferenceId,
+    withCustomer,
+    withCustomerEmail,
+    withLocale,
+    withSubmitType,
+    withSubscriptionData,
   )
 where
 
@@ -24,17 +24,17 @@ import Capability.Reader
 import Data.Aeson (FromJSON)
 import Network.HTTP.Req
 import qualified Network.HTTP.Req as Req
-import Stripey.Sessions.Data.Session (Session)
+import Protolude
+import Stripey.Env
+import qualified Stripey.Sessions.Data.LineItem as LI
+import Stripey.Sessions.Data.LineItem (LineItem)
+import Stripey.Sessions.Data.Locale (Locale)
+import Stripey.Sessions.Data.Mode (Mode)
 import Stripey.Sessions.Data.PaymentMethodType (PaymentMethodType)
 import qualified Stripey.Sessions.Data.PaymentMethodType as PMT
-import qualified Stripey.Sessions.Data.LineItem as LI
-import qualified Stripey.Sessions.Data.SubscriptionData as SD
-import Stripey.Sessions.Data.LineItem (LineItem)
-import Stripey.Sessions.Data.Mode (Mode)
-import Stripey.Sessions.Data.Locale (Locale)
+import Stripey.Sessions.Data.Session (Session)
 import Stripey.Sessions.Data.SubmitType (SubmitType)
-import Stripey.Env
-import Protolude
+import qualified Stripey.Sessions.Data.SubscriptionData as SD
 
 createSession :: (HasReader "apiToken" ByteString m, MonadHttp m) => [PaymentMethodType] -> Text -> Text -> (Network.HTTP.Req.Option 'Https -> m Session)
 createSession paymentMethodType successUrl cancelUrl = mkRequest (createSession' paymentMethodType successUrl cancelUrl)

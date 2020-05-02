@@ -1,3 +1,4 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -5,10 +6,7 @@
 {-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Stripey.Sessions.Data.BillingAddressCollection
-  ( BillingAddressCollection (..),
-  )
-where
+module Stripey.Customers.Data.TaxExempt where
 
 import Data.Aeson
 import Data.Char (toLower)
@@ -18,13 +16,13 @@ import qualified Data.Text.Lazy.Encoding as TLE
 import Protolude
 import Web.Internal.HttpApiData (ToHttpApiData (..))
 
-data BillingAddressCollection = Auto | Required deriving (Show, Generic)
+data TaxExempt = None | Exempt | Reverse deriving (Generic)
 
-instance FromJSON BillingAddressCollection where
+instance FromJSON TaxExempt where
   parseJSON = genericParseJSON defaultOptions {constructorTagModifier = map toLower}
 
-instance ToJSON BillingAddressCollection where
+instance ToJSON TaxExempt where
   toJSON = genericToJSON defaultOptions {constructorTagModifier = map toLower}
 
-instance ToHttpApiData BillingAddressCollection where
+instance ToHttpApiData TaxExempt where
   toUrlPiece shipping = T.dropAround (== '"') . TL.toStrict $ TLE.decodeUtf8 (encode shipping)

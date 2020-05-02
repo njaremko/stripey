@@ -1,31 +1,28 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeInType #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeInType #-}
 
 module Stripey.Sessions.Retrieve
-  (
-    retrieveSession
-    )
+  ( retrieveSession,
+  )
 where
 
 import Capability.Reader
+import Data.Aeson (FromJSON)
 import Network.HTTP.Req
 import qualified Network.HTTP.Req as Req
-import Stripey.Sessions.Data.Session (Session)
-import Stripey.Env
-import Data.Aeson (FromJSON)
 import Protolude hiding (MonadReader, ask)
+import Stripey.Env
+import Stripey.Sessions.Data.Session (Session)
 
 retrieveSession :: (HasReader "apiToken" ByteString m, MonadHttp m) => Text -> (Req.Option 'Https -> m Session)
 retrieveSession sessionId = mkRequest $ retrieveSession' sessionId

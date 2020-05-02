@@ -2,8 +2,8 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Stripey.Sessions.Data.Shipping
   ( Shipping,
@@ -14,10 +14,11 @@ import Data.Aeson
 import Protolude
 import Stripey.Charges.Data.Address
 
-data Shipping = Shipping {
-  address :: Address,
-  name :: Text
-} deriving (Show, Generic)
+data Shipping = Shipping
+  { address :: Address,
+    name :: Text
+  }
+  deriving (Show, Generic)
 
 instance FromJSON Shipping where
   parseJSON = genericParseJSON defaultOptions

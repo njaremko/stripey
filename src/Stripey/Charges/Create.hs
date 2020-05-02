@@ -1,10 +1,10 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
-{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Stripey.Charges.Create
   ( createCharge,
@@ -23,18 +23,17 @@ import qualified Data.Aeson as Aeson
 import Data.Aeson hiding (defaultOptions)
 import qualified Data.Text as T
 import Network.HTTP.Req
+import Protolude hiding (Option)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Charges.Data.Currency (Currency)
 import Stripey.Env
-import Protolude hiding (Option)
 
-data CreateChargeResponse
-  = CreateChargeResponse
-      { response_object :: Text,
-        response_data :: [Charge],
-        response_has_more :: Bool,
-        response_url :: Text
-      }
+data CreateChargeResponse = CreateChargeResponse
+  { response_object :: Text,
+    response_data :: [Charge],
+    response_has_more :: Bool,
+    response_url :: Text
+  }
   deriving (Show, Generic)
 
 instance FromJSON CreateChargeResponse where
@@ -77,7 +76,7 @@ createCharge' a c options =
     POST
     (https "api.stripe.com" /: "v1" /: "charges")
     NoReqBody
-    jsonResponse $
-    queryParam "amount" (Just a)
-    <> queryParam "currency" (Just (T.toLower . T.pack . show $ c))
-    <> options
+    jsonResponse
+    $ queryParam "amount" (Just a)
+      <> queryParam "currency" (Just (T.toLower . T.pack . show $ c))
+      <> options

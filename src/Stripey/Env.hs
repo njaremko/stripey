@@ -1,16 +1,15 @@
-{-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeInType #-}
-{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingVia #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeInType #-}
 
 module Stripey.Env
   ( Env (..),
@@ -28,11 +27,10 @@ import qualified Data.Aeson as Aeson
 import Network.HTTP.Req
 import Protolude hiding (MonadReader, Option, ask)
 
-data Env
-  = Env
-      { apiToken :: ByteString,
-        httpConfig :: HttpConfig
-      }
+data Env = Env
+  { apiToken :: ByteString,
+    httpConfig :: HttpConfig
+  }
   deriving (Generic)
 
 defaultOptions :: Monoid a => a

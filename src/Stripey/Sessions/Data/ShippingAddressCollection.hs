@@ -2,8 +2,8 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Stripey.Sessions.Data.ShippingAddressCollection
   ( ShippingAddressCollection,
@@ -13,8 +13,8 @@ where
 import Data.Aeson
 import Protolude
 
-newtype ShippingAddressCollection = ShippingAddressCollection {
-    allowed_countries :: Maybe [Text]
+newtype ShippingAddressCollection = ShippingAddressCollection
+  { allowed_countries :: Maybe [Text]
   }
   deriving (Show, Generic)
 

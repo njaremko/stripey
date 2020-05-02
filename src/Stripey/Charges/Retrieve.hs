@@ -1,31 +1,28 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeInType #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeInType #-}
 
 module Stripey.Charges.Retrieve
-  (
-    retrieveCharge,
-    defaultOptions
-    )
+  ( retrieveCharge,
+    defaultOptions,
+  )
 where
 
 import Capability.Reader
 import Data.Aeson hiding (defaultOptions)
 import Network.HTTP.Req
+import Protolude hiding (MonadReader, Option, ask)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Env
-import Protolude hiding (MonadReader, Option, ask)
 
 retrieveCharge :: (HasReader "apiToken" ByteString m, MonadHttp m) => Text -> (Network.HTTP.Req.Option 'Https -> m Charge)
 retrieveCharge chargeId = mkRequest $ retrieveCharge' chargeId

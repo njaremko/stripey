@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 005352a6c7fba06af98b365141e69cabe6e2a0005c67f85acf4bca00f6183ea0
+-- hash: 65ebbf288a666a79b94cd4222a887c37df821e32da8724f1b28fda77d122864c
 
 name:           stripey
 version:        0.0.0.1
@@ -48,6 +48,9 @@ library
       Stripey.Charges.List
       Stripey.Charges.Retrieve
       Stripey.Charges.Update
+      Stripey.Customers.Create
+      Stripey.Customers.Data.Customer
+      Stripey.Customers.Data.TaxExempt
       Stripey.Env
       Stripey.Sessions.Create
       Stripey.Sessions.Data.BillingAddressCollection

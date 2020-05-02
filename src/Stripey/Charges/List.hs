@@ -1,17 +1,15 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeInType #-}
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeInType #-}
 
 module Stripey.Charges.List
   ( Charge,
@@ -24,7 +22,7 @@ module Stripey.Charges.List
     withEndingBefore,
     withPaymentIntent,
     withStartingAfter,
-    withTransferGroup
+    withTransferGroup,
   )
 where
 
@@ -32,17 +30,16 @@ import Capability.Reader
 import qualified Data.Aeson as Aeson
 import Data.Aeson hiding (defaultOptions)
 import Network.HTTP.Req
+import Protolude hiding (MonadReader, Option, ask)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Env
-import Protolude hiding (MonadReader, Option, ask)
 
-data ListChargesResponse
-  = ListChargesResponse
-      { response_object :: Text,
-        response_data :: [Charge],
-        response_has_more :: Bool,
-        response_url :: Text
-      }
+data ListChargesResponse = ListChargesResponse
+  { response_object :: Text,
+    response_data :: [Charge],
+    response_has_more :: Bool,
+    response_url :: Text
+  }
   deriving (Show, Generic)
 
 instance FromJSON ListChargesResponse where

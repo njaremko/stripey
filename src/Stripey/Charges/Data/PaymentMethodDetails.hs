@@ -1,10 +1,10 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE OverloadedLabels #-}
-{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Stripey.Charges.Data.PaymentMethodDetails
   ( PaymentMethodDetails,
@@ -14,12 +14,12 @@ module Stripey.Charges.Data.PaymentMethodDetails
 where
 
 import Data.Aeson
+import Protolude
 import Stripey.Charges.Data.PaymentMethodDetails.ACHCreditTransfer (ACHCreditTransfer)
 import Stripey.Charges.Data.PaymentMethodDetails.Card (Card)
-import Protolude
-data PaymentMethodDetails
-  = PaymentMethodDetails
-      { ach_credit_transfer :: Maybe ACHCreditTransfer,
-        card :: Maybe Card
-      }
+
+data PaymentMethodDetails = PaymentMethodDetails
+  { ach_credit_transfer :: Maybe ACHCreditTransfer,
+    card :: Maybe Card
+  }
   deriving (Show, Generic, FromJSON)

@@ -1,34 +1,32 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingVia #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE TypeInType #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeInType #-}
 
 module Stripey.Charges.Capture
-  (
-    captureCharge,
+  ( captureCharge,
     withAmount,
     withReceiptEmail,
     withStatementDescriptor,
     withStatementDescriptorSuffix,
-    defaultOptions
-    )
+    defaultOptions,
+  )
 where
 
 import Capability.Reader
 import Data.Aeson hiding (defaultOptions)
 import Network.HTTP.Req
+import Protolude hiding (MonadReader, Option, ask)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Env
-import Protolude hiding (MonadReader, Option, ask)
 
 captureCharge :: (HasReader "apiToken" ByteString m, MonadHttp m) => Text -> (Network.HTTP.Req.Option 'Https -> m Charge)
 captureCharge chargeId = mkRequest $ captureCharge' chargeId
@@ -46,7 +44,6 @@ captureCharge' chargeId =
     (https "api.stripe.com" /: "v1" /: "charges" /~ chargeId /: "capture")
     NoReqBody
     jsonResponse
-
 
 withAmount :: Int -> Option scheme
 withAmount c = queryParam "amount" (Just c)
