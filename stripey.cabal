@@ -4,7 +4,7 @@ cabal-version: 2.2
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 65ebbf288a666a79b94cd4222a887c37df821e32da8724f1b28fda77d122864c
+-- hash: 1fe5da933b7c41d049bc68d628b4df843833babfbcb0c43925ccec3fffc7c434
 
 name:           stripey
 version:        0.0.0.1
@@ -74,13 +74,12 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
-    , capability
     , casing
+    , fused-effects
     , generic-optics
     , genvalidity
     , genvalidity-aeson
     , http-api-data
-    , mtl
     , optics-core
     , protolude
     , req
@@ -108,8 +107,8 @@ test-suite stripey-test
   build-depends:
       aeson
     , base >=4.7 && <5
-    , capability
     , casing
+    , fused-effects
     , generic-optics
     , genvalidity
     , genvalidity-aeson
@@ -117,7 +116,6 @@ test-suite stripey-test
     , genvalidity-hspec-aeson
     , hspec
     , http-api-data
-    , mtl
     , optics-core
     , protolude
     , req

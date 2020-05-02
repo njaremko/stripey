@@ -16,15 +16,14 @@ module Stripey.Sessions.Retrieve
   )
 where
 
-import Capability.Reader
 import Data.Aeson (FromJSON)
 import Network.HTTP.Req
 import qualified Network.HTTP.Req as Req
-import Protolude hiding (MonadReader, ask)
+import Protolude hiding (MonadReader, Reader, ask)
 import Stripey.Env
 import Stripey.Sessions.Data.Session (Session)
 
-retrieveSession :: (HasReader "apiToken" ByteString m, MonadHttp m) => Text -> (Req.Option 'Https -> m Session)
+retrieveSession :: (IsStripeRequest sig m, MonadHttp m) => Text -> (Req.Option 'Https -> m Session)
 retrieveSession sessionId = mkRequest $ retrieveSession' sessionId
 
 retrieveSession' ::

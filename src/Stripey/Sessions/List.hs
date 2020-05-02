@@ -19,11 +19,11 @@ module Stripey.Sessions.List
   )
 where
 
-import Capability.Reader
+import Control.Carrier.Reader
 import Data.Aeson
 import Network.HTTP.Req
 import qualified Network.HTTP.Req as Req
-import Protolude hiding (MonadReader, ask)
+import Protolude hiding (MonadReader, Reader, ask)
 import Stripey.Env hiding (defaultOptions)
 import Stripey.Sessions.Data.Session (Session)
 
@@ -38,7 +38,7 @@ data ListSessionsResponse = ListSessionsResponse
 instance FromJSON ListSessionsResponse where
   parseJSON = genericParseJSON defaultOptions {fieldLabelModifier = drop 9}
 
-listSessions :: (HasReader "apiToken" ByteString m, MonadHttp m) => (Req.Option 'Https -> m ListSessionsResponse)
+listSessions :: (IsStripeRequest sig m, MonadHttp m) => (Req.Option 'Https -> m ListSessionsResponse)
 listSessions = mkRequest listSessions'
 
 listSessions' ::

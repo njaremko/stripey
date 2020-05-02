@@ -30,8 +30,7 @@ dependencies:
 - optics-core
 - generic-optics
 - stm
-- capability
-- mtl
+- fused-effects
 - validity
 - validity-aeson
 - genvalidity

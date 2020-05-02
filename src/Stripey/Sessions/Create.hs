@@ -20,11 +20,11 @@ module Stripey.Sessions.Create
   )
 where
 
-import Capability.Reader
+import Control.Carrier.Reader
 import Data.Aeson (FromJSON)
 import Network.HTTP.Req
 import qualified Network.HTTP.Req as Req
-import Protolude
+import Protolude hiding (Reader)
 import Stripey.Env
 import qualified Stripey.Sessions.Data.LineItem as LI
 import Stripey.Sessions.Data.LineItem (LineItem)
@@ -36,12 +36,13 @@ import Stripey.Sessions.Data.Session (Session)
 import Stripey.Sessions.Data.SubmitType (SubmitType)
 import qualified Stripey.Sessions.Data.SubscriptionData as SD
 
-createSession :: (HasReader "apiToken" ByteString m, MonadHttp m) => [PaymentMethodType] -> Text -> Text -> (Network.HTTP.Req.Option 'Https -> m Session)
+createSession :: (IsStripeRequest sig m, MonadHttp m) => [PaymentMethodType] -> Text -> Text -> (Network.HTTP.Req.Option 'Https -> m Session)
 createSession paymentMethodType successUrl cancelUrl = mkRequest (createSession' paymentMethodType successUrl cancelUrl)
 
 createSession' ::
-  MonadHttp m0 =>
-  FromJSON a0 =>
+  ( MonadHttp m0,
+    FromJSON a0
+  ) =>
   [PaymentMethodType] ->
   Text ->
   Text ->

@@ -18,12 +18,11 @@ module Stripey.Charges.Create
   )
 where
 
-import Capability.Reader
 import qualified Data.Aeson as Aeson
 import Data.Aeson hiding (defaultOptions)
 import qualified Data.Text as T
 import Network.HTTP.Req
-import Protolude hiding (Option)
+import Protolude hiding (Option, Reader)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Charges.Data.Currency (Currency)
 import Stripey.Env
@@ -61,12 +60,13 @@ withStatementDescriptorSuffix c
   | T.length c > 22 = Left "Statement Descriptor Suffix cannot be longer than 22 characters."
   | otherwise = Right (queryParam "statement_descriptor_suffix" (Just c))
 
-createCharge :: (HasReader "apiToken" ByteString m, MonadHttp m) => Int -> Currency -> (Network.HTTP.Req.Option 'Https -> m Charge)
+createCharge :: (IsStripeRequest sig m, MonadHttp m) => Int -> Currency -> (Network.HTTP.Req.Option 'Https -> m Charge)
 createCharge a c = mkRequest (createCharge' a c)
 
 createCharge' ::
-  MonadHttp m0 =>
-  FromJSON a0 =>
+  ( MonadHttp m0,
+    FromJSON a0
+  ) =>
   Int ->
   Currency ->
   Network.HTTP.Req.Option 'Https ->

@@ -26,11 +26,11 @@ module Stripey.Charges.List
   )
 where
 
-import Capability.Reader
+import Control.Carrier.Reader
 import qualified Data.Aeson as Aeson
 import Data.Aeson hiding (defaultOptions)
 import Network.HTTP.Req
-import Protolude hiding (MonadReader, Option, ask)
+import Protolude hiding (MonadReader, Option, Reader, ask)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Env
 
@@ -66,7 +66,7 @@ withStartingAfter c = queryParam "starting_after" (Just c)
 withTransferGroup :: Text -> Option scheme
 withTransferGroup c = queryParam "transfer_group" (Just c)
 
-listCharges :: (HasReader "apiToken" ByteString m, MonadHttp m) => (Network.HTTP.Req.Option 'Https -> m ListChargesResponse)
+listCharges :: (IsStripeRequest sig m, MonadHttp m) => (Network.HTTP.Req.Option 'Https -> m ListChargesResponse)
 listCharges = mkRequest listCharges'
 
 listCharges' ::

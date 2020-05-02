@@ -22,16 +22,15 @@ module Stripey.Charges.Update
   )
 where
 
-import Capability.Reader
 import Data.Aeson hiding (defaultOptions)
 import Network.HTTP.Req
-import Protolude hiding (MonadReader, Option, ask)
+import Protolude hiding (MonadReader, Option, Reader, ask)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Charges.Data.FraudDetails
 import Stripey.Charges.Data.Shipping
 import Stripey.Env
 
-updateCharge :: (HasReader "apiToken" ByteString m, MonadHttp m) => Text -> (Network.HTTP.Req.Option 'Https -> m Charge)
+updateCharge :: (IsStripeRequest sig m, MonadHttp m) => Text -> (Network.HTTP.Req.Option 'Https -> m Charge)
 updateCharge chargeId = mkRequest $ updateCharge' chargeId
 
 updateCharge' ::

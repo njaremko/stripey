@@ -20,22 +20,23 @@ module Stripey.Customers.Create
   )
 where
 
-import Capability.Reader
+import Control.Carrier.Reader
 import qualified Data.Aeson as Aeson
 import Data.Aeson hiding (defaultOptions)
 import qualified Data.Text as T
 import Network.HTTP.Req
-import Protolude hiding (Option)
+import Protolude hiding (Option, Reader)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Customers.Data.TaxExempt
 import Stripey.Env
 
-createCustomer :: (HasReader "apiToken" ByteString m, MonadHttp m) => (Network.HTTP.Req.Option 'Https -> m Charge)
+createCustomer :: (IsStripeRequest sig m, MonadHttp m) => (Network.HTTP.Req.Option 'Https -> m Charge)
 createCustomer = mkRequest createCustomer'
 
 createCustomer' ::
-  MonadHttp m0 =>
-  FromJSON a0 =>
+  ( MonadHttp m0,
+    FromJSON a0
+  ) =>
   Network.HTTP.Req.Option 'Https ->
   m0 (JsonResponse a0)
 createCustomer' = req POST (https "api.stripe.com" /: "v1" /: "customers") NoReqBody jsonResponse

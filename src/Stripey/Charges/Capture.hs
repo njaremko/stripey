@@ -21,14 +21,14 @@ module Stripey.Charges.Capture
   )
 where
 
-import Capability.Reader
+import Control.Carrier.Reader
 import Data.Aeson hiding (defaultOptions)
 import Network.HTTP.Req
-import Protolude hiding (MonadReader, Option, ask)
+import Protolude hiding (MonadReader, Option, Reader, ask)
 import Stripey.Charges.Data.Charge (Charge)
 import Stripey.Env
 
-captureCharge :: (HasReader "apiToken" ByteString m, MonadHttp m) => Text -> (Network.HTTP.Req.Option 'Https -> m Charge)
+captureCharge :: (IsStripeRequest sig m, MonadHttp m) => Text -> (Network.HTTP.Req.Option 'Https -> m Charge)
 captureCharge chargeId = mkRequest $ captureCharge' chargeId
 
 captureCharge' ::

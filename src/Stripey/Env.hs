@@ -1,3 +1,4 @@
+{-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
@@ -5,6 +6,7 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeApplications #-}
@@ -12,22 +14,23 @@
 {-# LANGUAGE TypeInType #-}
 
 module Stripey.Env
-  ( Env (..),
+  ( StripeEnv (..),
+    StripeRequest,
+    IsStripeRequest,
     mkEnv,
     mkRequest,
     runStripe,
     defaultOptions,
-    StripeRequest,
   )
 where
 
-import Capability.Reader
-import Capability.Source
+import Control.Carrier.Lift
+import Control.Carrier.Reader
 import qualified Data.Aeson as Aeson
 import Network.HTTP.Req
-import Protolude hiding (MonadReader, Option, ask)
+import Protolude hiding (Option, Reader, ask, runReader)
 
-data Env = Env
+data StripeEnv = StripeEnv
   { apiToken :: ByteString,
     httpConfig :: HttpConfig
   }
@@ -36,27 +39,24 @@ data Env = Env
 defaultOptions :: Monoid a => a
 defaultOptions = mempty
 
-newtype StripeRequest a = StripeRequest (ReaderT Env IO a)
-  deriving (Functor, Applicative, Monad, MonadIO) via ReaderT Env IO
-  deriving
-    (HasSource "apiToken" ByteString, HasReader "apiToken" ByteString)
-    via Field "apiToken" "env" (MonadReader (ReaderT Env IO))
-  deriving
-    (HasSource "httpConfig" HttpConfig, HasReader "httpConfig" HttpConfig)
-    via Field "httpConfig" "env" (MonadReader (ReaderT Env IO))
+type IsStripeRequest sig m = (Has (Reader StripeEnv) sig m)
+
+type StripeRequest = (ReaderC StripeEnv (LiftC IO))
 
 instance MonadHttp StripeRequest where
-  handleHttpException = StripeRequest . lift . throwIO
-  getHttpConfig = ask @"httpConfig"
+  handleHttpException = lift . throwIO
+  getHttpConfig = do
+    StripeEnv {httpConfig} <- ask
+    return httpConfig
 
-runStripe :: Env -> StripeRequest a -> IO a
-runStripe env (StripeRequest m) = runReaderT m env
+runStripe :: StripeEnv -> StripeRequest a -> IO a
+runStripe env = runM . runReader @StripeEnv env
 
-mkEnv :: ByteString -> Env
-mkEnv token = Env {apiToken = "Bearer " <> token, httpConfig = defaultHttpConfig}
+mkEnv :: ByteString -> StripeEnv
+mkEnv token = StripeEnv {apiToken = "Bearer " <> token, httpConfig = defaultHttpConfig}
 
 mkRequest ::
-  ( HasReader "apiToken" ByteString m,
+  ( IsStripeRequest sig m,
     MonadHttp m,
     Aeson.FromJSON a
   ) =>
@@ -64,6 +64,6 @@ mkRequest ::
   Option 'Https ->
   m a
 mkRequest re options = do
-  token <- ask @"apiToken"
-  r <- (re $ header "Authorization" token <> options)
+  StripeEnv {apiToken = token} <- ask
+  r <- re $ header "Authorization" token <> options
   liftIO $ return (responseBody r)
