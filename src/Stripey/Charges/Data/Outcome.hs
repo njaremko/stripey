@@ -13,7 +13,8 @@ where
 import Data.Aeson
 import Data.Char (toLower)
 import Protolude
-import Text.Casing (snake)
+import Control.Carrier.Fail.Either
+import Data.Aeson.Types (Parser)
 
 data OutcomeRiskLevel = Normal | Elevated | Highest | NotAssessed | Unknown deriving (Show, Generic)
 
@@ -35,10 +36,25 @@ instance FromJSON Outcome where
 
 data OutcomeNetworkStatus = ApprovedByNetwork | DeclinedByNetwork | NotSentToNetwork | ReversedAfterApproval deriving (Show, Generic)
 
+parseOutcomeRiskLevel :: Text -> Parser OutcomeNetworkStatus
+parseOutcomeRiskLevel "approved_by_network" = return ApprovedByNetwork
+parseOutcomeRiskLevel "declined_by_network" = return DeclinedByNetwork
+parseOutcomeRiskLevel "not_sent_to_network" = return NotSentToNetwork
+parseOutcomeRiskLevel "reversed_after_approval" =  return ReversedAfterApproval
+parseOutcomeRiskLevel _ = fail "Invalid outcome risk level!"
+
 instance FromJSON OutcomeNetworkStatus where
-  parseJSON = genericParseJSON defaultOptions {constructorTagModifier = map toLower . snake}
+  parseJSON = withText "string" parseOutcomeRiskLevel
 
 data OutcomeType = Authorized | ManualReview | IssuerDeclined | Blocked | Invalid deriving (Show, Generic)
 
+parseOutcomeType :: Text -> Parser OutcomeType
+parseOutcomeType "authorized" =  return Authorized
+parseOutcomeType "manual_review" = return ManualReview
+parseOutcomeType "issuer_declined" = return IssuerDeclined
+parseOutcomeType "blocked" = return Blocked
+parseOutcomeType "invalid" = return Invalid
+parseOutcomeType _ = fail "Invalid outcome type!"
+
 instance FromJSON OutcomeType where
-  parseJSON = genericParseJSON defaultOptions {constructorTagModifier = map toLower . snake}
+  parseJSON = withText "string" parseOutcomeType

@@ -24,17 +24,12 @@ dependencies:
   version: ">= 4.7 && < 5"
 - protolude
 - aeson
-- casing
 - req
 - text
 - optics-core
 - generic-optics
 - stm
 - fused-effects
-- validity
-- validity-aeson
-- genvalidity
-- genvalidity-aeson
 - http-api-data
 
 default-extensions:
@@ -71,5 +66,9 @@ tests:
     dependencies:
     - stripey
     - hspec
+    - validity
+    - validity-aeson
+    - genvalidity
+    - genvalidity-aeson
     - genvalidity-hspec
     - genvalidity-hspec-aeson
