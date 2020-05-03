@@ -15,6 +15,7 @@
 
 module Stripey.Env
   ( StripeEnv (..),
+    HasApiToken (..),
     StripeRequest,
     IsStripeRequest,
     mkEnv,
@@ -35,6 +36,15 @@ data StripeEnv = StripeEnv
     httpConfig :: HttpConfig
   }
   deriving (Generic)
+
+class HasApiToken a where
+  getApiToken :: a -> ByteString
+
+instance HasApiToken ByteString where
+  getApiToken = identity
+
+instance HasApiToken StripeEnv where
+  getApiToken = apiToken
 
 defaultOptions :: Monoid a => a
 defaultOptions = mempty
@@ -57,6 +67,7 @@ mkEnv token = StripeEnv {apiToken = "Bearer " <> token, httpConfig = defaultHttp
 
 mkRequest ::
   ( IsStripeRequest sig m,
+    HasApiToken StripeEnv,
     MonadHttp m,
     Aeson.FromJSON a
   ) =>
@@ -64,6 +75,6 @@ mkRequest ::
   Option 'Https ->
   m a
 mkRequest re options = do
-  StripeEnv {apiToken = token} <- ask
-  r <- re $ header "Authorization" token <> options
+  env <- ask @StripeEnv
+  r <- re $ header "Authorization" (getApiToken env) <> options
   liftIO $ return (responseBody r)
